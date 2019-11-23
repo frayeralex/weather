@@ -1,7 +1,8 @@
-package com.github.frayeralex.weather
+package com.github.frayeralex.weather.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.github.frayeralex.weather.R
 
 class MainActivity : AppCompatActivity() {
 
