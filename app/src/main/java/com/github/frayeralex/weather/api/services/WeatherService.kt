@@ -23,7 +23,7 @@ interface WeatherService {
     fun getForecast(
         @Query(SEARCH_QUERY_PARAM) location: String,
         @Query(UNIT_QUERY_PARAM) units: String,
-        @Query(COUNT_QUERY_PARAM) count: String = "7"
+        @Query(COUNT_QUERY_PARAM) count: String = "40"
     ): Call<ForecastResponse>
 
 }
