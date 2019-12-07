@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
+    def room_version = "2.2.2"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     //Kotlin
@@ -49,6 +50,10 @@ dependencies {
     //Chuck
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     testImplementation 'junit:junit:4.12'
 

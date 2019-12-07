@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
+import com.github.frayeralex.weather.App
 import com.github.frayeralex.weather.R
 import com.github.frayeralex.weather.models.*
 import com.github.frayeralex.weather.api.responses.ForecastResponse
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity(), ForecastDataProviderInterface, Forecas
     private var forecastList: ArrayList<ForecastListItem> = arrayListOf()
     private var selectedForecast: ForecastListItem? = null
     private val forecastDataSubscribers: ArrayList<(data: ArrayList<ForecastListItem>) -> Unit> = arrayListOf()
+    private val app by lazy { application as App }
+    private val db by lazy { app.getDatabase() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,8 @@ class MainActivity : AppCompatActivity(), ForecastDataProviderInterface, Forecas
             }
         }
         fetchForecast()
+
+        // todo use db for saving data
     }
 
     private fun showDetails() {
