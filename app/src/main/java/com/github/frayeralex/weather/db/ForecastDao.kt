@@ -8,14 +8,14 @@ import androidx.room.Query
 @Dao
 interface ForecastDao {
     @Query("SELECT * FROM forecast")
-    fun getAll(): List<Forecast>
+    suspend fun getAll(): List<Forecast>
 
     @Query("SELECT * FROM forecast WHERE uid IN (:ids)")
-    fun loadAllByIds(ids: IntArray): List<Forecast>
+    suspend fun loadAllByIds(ids: IntArray): List<Forecast>
 
     @Insert
-    fun insertAll(vararg forecasts: Forecast)
+    suspend fun insertAll(vararg forecasts: Forecast)
 
     @Delete
-    fun delete(forecast: Forecast)
+    suspend fun delete(forecast: Forecast)
 }

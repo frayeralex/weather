@@ -5,7 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Forecast(
-    @PrimaryKey val uid: Int,
     val dt: Long,
     val temp: Double
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var uid: Int = 0
+}

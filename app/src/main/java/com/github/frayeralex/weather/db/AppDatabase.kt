@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.github.frayeralex.weather.App
 
-@Database(entities = arrayOf(Forecast::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Forecast::class), version = 2)
 public abstract class AppDatabase : RoomDatabase() {
     abstract fun forecastDao(): ForecastDao
 

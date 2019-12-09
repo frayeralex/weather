@@ -3,19 +3,20 @@ package com.github.frayeralex.weather.activities
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.github.frayeralex.weather.App
 import com.github.frayeralex.weather.R
 import com.github.frayeralex.weather.models.*
 import com.github.frayeralex.weather.api.responses.ForecastResponse
 import com.github.frayeralex.weather.cache.SPCache
+import com.github.frayeralex.weather.db.Forecast
 import com.github.frayeralex.weather.fragments.*
 import com.github.frayeralex.weather.interfaces.*
 import com.github.frayeralex.weather.providers.*
+import kotlinx.coroutines.launch
 import retrofit2.*
 
-class MainActivity : AppCompatActivity(), ForecastDataProviderInterface, ForecastHandleListItemInterface {
+class MainActivity : BaseActivity(), ForecastDataProviderInterface, ForecastHandleListItemInterface {
 
     private val cache by lazy { SPCache(this) }
     private val serviceProvider by lazy { ServiceProvider() }
@@ -40,8 +41,16 @@ class MainActivity : AppCompatActivity(), ForecastDataProviderInterface, Forecas
             }
         }
         fetchForecast()
+    }
 
-        // todo use db for saving data
+    fun saveForecastDb() {
+        launch {
+            forecastList.forEach {
+                db.forecastDao().insertAll(Forecast(dt = it.dt, temp = it.main.temp))
+
+            }
+            Log.d("db:getAll()", db.forecastDao().getAll().toString())
+        }
     }
 
     private fun showDetails() {
@@ -98,14 +107,14 @@ class MainActivity : AppCompatActivity(), ForecastDataProviderInterface, Forecas
 
     fun handleFetchForecastFailure (call: Call<ForecastResponse>, t: Throwable) {
         Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-        Log.d("forecastList__error", t.message)
     }
 
     fun handleFetchForecastSuccess (call: Call<ForecastResponse>, response: Response<ForecastResponse>) {
         if (response.body()?.list is List) {
             forecastList = response.body()?.list as ArrayList<ForecastListItem>
+            saveForecastDb()
+            Log.d("db", forecastList.toString())
             forecastDataSubscribers.forEach{ handler -> handler(forecastList) }
         }
-        Log.d("forecastList_handleFetchForecastSuccess", forecastList.toString())
     }
 }
